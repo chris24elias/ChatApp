@@ -1,85 +1,80 @@
-import React, { useRef, useEffect } from "react";
-import { View, Text, Keyboard, Alert, SafeAreaView } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import { View, Text, Keyboard, Alert, SafeAreaView, KeyboardAvoidingView, Image } from "react-native";
 import { useStoreState, useStoreActions } from "../../Store/store";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, Headline } from "react-native-paper";
 import { ScrollView } from "react-native";
-import { STATUS } from "../../Constants";
+import { STATUS, SCREEN_HEIGHT } from "../../Constants";
 import useAuth from "../../Auth";
+import LinearGradient from "react-native-linear-gradient";
 
 export default () => {
-    const onChange = useStoreActions((actions) => actions.login.onLoginInputChange);
-    const { state, login, requestToken } = useAuth();
-
-    const inputUserName = useRef();
-    const inputPassword = useRef();
-
-
-    const onSubmit = () => {
-        inputPassword.current.focus();
-    };
-
-    const { email, qrCode, status } = useStoreState((state) => ({
-        email: state.login.email,
-        qrCode: state.login.qrCode,
-        status: state.login.status,
-    }));
+    // const onChange = useStoreActions((actions) => actions.login.onLoginInputChange);
+    const [username, setUsername] = useState("");
+    const { login } = useAuth();
 
     const loginUser = () => {
         Keyboard.dismiss();
 
-        // if (!username || !password) {
-        //     // showInfoToast();
-        //     Alert.alert("Username and password are mandatory, try again !");
-        // }
+        if (!username) {
+            // showInfoToast();
+            Alert.alert("Username is mandatory, try again !");
+            return;
+        }
 
-        login(qrCode);
+        login(username);
     };
 
-    const loading = status == STATUS.FETCHING;
-
     return (
-        <SafeAreaView>
-            <TextInput
-                label="EMAIL"
-                // mode="outlined"
-                ref={inputUserName}
-                autoCapitalize="none"
-                returnKeyType={"next"}
-                onSubmitEditing={onSubmit}
-                onChangeText={(text) =>
-                    onChange({
-                        key: "email",
-                        value: text,
-                    })
-                }
-                value={email}
-            />
+        <LinearGradient colors={["#00c6ff", "#0072ff"]} style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
+                <KeyboardAvoidingView
+                    style={{
+                        flex: 1,
+                        padding: 15,
 
-
-
-            <Button loading={loading} dark={true} onPress={() => requestToken(email)}>
-                <Text>Request QR Code</Text>
-            </Button>
-
-
-            <TextInput
-                ref={inputPassword}
-                value={qrCode}
-                // mode="outlined"
-                label="QR CODE"
-                returnKeyType={"go"}
-                onSubmitEditing={loginUser}
-                onChangeText={(text) =>
-                    onChange({
-                        key: "qrCode",
-                        value: text,
-                    })
-                }
-            />
-
-            <Button loading={loading} dark={true} onPress={loginUser}>
-                <Text>Login</Text>
-            </Button>
-        </SafeAreaView>
+                        justifyContent: "center",
+                        // alignItems: "center",
+                    }}
+                    behavior="padding"
+                    enabled
+                >
+                    <View style={{ flex: 1.5, justifyContent: "center" }}>
+                        <Image
+                            source={require("../../images/logo2.png")}
+                            style={{ height: SCREEN_HEIGHT * 0.17, width: undefined }}
+                            resizeMode="contain"
+                        />
+                        {/* <Text style={{ alignSelf: "center", fontSize: 30 }}>Chat App</Text> */}
+                    </View>
+                    <View style={{ flex: 1, padding: 15, paddingVertical: 20 }}>
+                        {/* <Text>Please enter a username</Text> */}
+                        <TextInput
+                            label="Username"
+                            autoCapitalize="none"
+                            returnKeyType={"next"}
+                            onChangeText={(text) => setUsername(text)}
+                            value={username}
+                            // mode="outlined"
+                            style={{
+                                backgroundColor: "white",
+                                borderRadius: 4,
+                                borderTopLeftRadius: 4,
+                                borderTopRightRadius: 4,
+                            }}
+                        />
+                        <View style={{ marginTop: 10 }}>
+                            <Button
+                                dark={true}
+                                mode="contained"
+                                onPress={loginUser}
+                                style={{ borderRadius: 4, backgroundColor: "#48dbfb" }}
+                            >
+                                <Text>Login</Text>
+                            </Button>
+                        </View>
+                    </View>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </LinearGradient>
     );
 };

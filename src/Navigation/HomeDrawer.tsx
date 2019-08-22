@@ -1,5 +1,5 @@
 import React from "react";
-import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
+import { createBottomTabNavigator, createStackNavigator, createDrawerNavigator } from "react-navigation";
 import Routes from "./Routes";
 import Chats from "../Screens/Chats/Chats";
 import ChatRoom from "../Screens/ChatRoom/ChatRoom";
@@ -29,14 +29,14 @@ const ChatsStack = createStackNavigator({
     },
 });
 
-export default createBottomTabNavigator(
+export default createDrawerNavigator(
     {
         [Routes.HOME_STACK]: {
             screen: HomeStack,
             path: "home",
             navigationOptions: {
                 title: "Home",
-                tabBarIcon: getHomeIcon,
+                drawerIcon: getHomeIcon,
             },
         },
 
@@ -44,7 +44,7 @@ export default createBottomTabNavigator(
             screen: ChatsStack,
             path: "chats",
             navigationOptions: {
-                tabBarIcon: getNotificationIcon,
+                drawerIcon: getNotificationIcon,
                 title: "Chats",
             },
         },

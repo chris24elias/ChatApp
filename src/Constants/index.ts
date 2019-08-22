@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Platform, Dimensions } from "react-native";
 import DeviceInfo from "react-native-device-info";
 export const isAndroid = Platform.OS === "android" ? true : false;
 export const isIos = !isAndroid;
@@ -34,3 +34,6 @@ export const DEVICE_OS_VERSION = DeviceInfo.getSystemVersion();
 export const DEVICE_MODEL = DeviceInfo.getModel();
 
 export const endpointURL = "";
+
+export const SCREEN_HEIGHT = Dimensions.get("window").height;
+export const SCREEN_WIDTH = Dimensions.get("window").width;

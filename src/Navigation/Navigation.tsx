@@ -5,20 +5,19 @@ import { Transition } from "react-native-reanimated";
 import Login from "../Screens/Login";
 import Routes from "./Routes";
 import LaunchScreen from "../Screens/LaunchScreen/LaunchScreen";
-import HomeTabs from "./HomeTabs";
-import LoadProfile from "../Screens/LoadProfile";
+import HomeDrawer from "./HomeDrawer";
 
 const MainStack = createStackNavigator(
     {
-        [Routes.HOME_TABS]: {
-            screen: HomeTabs,
+        [Routes.HOME_DRAWER]: {
+            screen: HomeDrawer,
             path: "tabs",
         },
     },
     {
         // Default config for all screens
         headerMode: "none",
-        initialRouteName: Routes.HOME_TABS,
+        initialRouteName: Routes.HOME_DRAWER,
     }
 );
 
@@ -49,7 +48,7 @@ const PrimaryNav = createAnimatedSwitchNavigator(
                 <Transition.In type="slide-right" durationMs={200} />
             </Transition.Together>
         ),
-        initialRouteName: Routes.MAIN_APP,
+        initialRouteName: Routes.LOADING,
     }
 );
 

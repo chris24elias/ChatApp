@@ -10,24 +10,20 @@ import Routes from "../Navigation/Routes";
 const AuthStateContext = React.createContext();
 
 export const AuthContextProvider = (props: any) => {
-    const { loginUser, setState, checkLogin, setToken, requestToken } = useStoreActions((actions) => ({
-        loginUser: actions.login.loginUser,
-        checkLogin: actions.login.checkLogin,
-        setToken: actions.login.setToken,
-        requestToken: actions.login.requestToken,
+    const { setState, checkLogin, setUsername } = useStoreActions((actions) => ({
+        checkLogin: actions.checkLogin,
         setState: actions.changeAppState,
+        setUsername: actions.setUsername,
     }));
 
-    // const version = useCheckVersion();
     const state = useStoreState((state) => state.appstate);
-    // const [state, setState] = useState(APP_STATE.UNKNOWN);
 
-    function login(qr_code_id: string) {
-        loginUser(qr_code_id).then((success: boolean) => {
-            if (success) {
-                setState(APP_STATE.PRIVATE);
-            }
-        });
+    function login(userName: string) {
+        if (!userName) {
+            return;
+        }
+        setUsername(userName);
+        setState(APP_STATE.PRIVATE);
     }
 
     function logout() {
@@ -44,21 +40,22 @@ export const AuthContextProvider = (props: any) => {
     }
 
     async function _logoutUser() {
+        setUsername("");
         setState(APP_STATE.PUBLIC);
-        setToken("");
     }
 
     // check loggedin on mount
     useEffect(() => {
-        if (state == APP_STATE.UNKNOWN) {
-            checkLogin().then((loggedIn: boolean) => {
-                if (loggedIn) {
-                    setState(APP_STATE.PRIVATE);
-                } else {
-                    setState(APP_STATE.PUBLIC);
-                }
-            });
-        }
+        // if (state == APP_STATE.UNKNOWN) {
+        //     let loggedIn = checkLogin();
+        //     console.log("checking logged in", loggedIn);
+        //     if (loggedIn) {
+        //         setState(APP_STATE.PRIVATE);
+        //     } else {
+        //         setState(APP_STATE.PUBLIC);
+        //     }
+        // }
+        state == APP_STATE.UNKNOWN && checkLogin();
     }, []);
 
     // app state reactor

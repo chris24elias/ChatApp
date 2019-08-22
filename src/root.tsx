@@ -17,15 +17,15 @@ const Root = () => {
             persistor={persistor}
         >
             <StoreProvider store={store}>
-                {/* <AuthContextProvider> */}
-                {/* <GQLProvider> */}
-                <Navigation
-                    // uriPrefix={APP_PREFIX}
-                    // screenProps={{ theme, t }}
-                    ref={(nav: any) => NavigationService.setTopLevelNavigator(nav)}
-                />
-                {/* </GQLProvider> */}
-                {/* </AuthContextProvider> */}
+                <AuthContextProvider>
+                    {/* <GQLProvider> */}
+                    <Navigation
+                        // uriPrefix={APP_PREFIX}
+                        // screenProps={{ theme, t }}
+                        ref={(nav: any) => NavigationService.setTopLevelNavigator(nav)}
+                    />
+                    {/* </GQLProvider> */}
+                </AuthContextProvider>
             </StoreProvider>
         </PersistGate>
     );
